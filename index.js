@@ -10,6 +10,7 @@ const photosArray = [];
 const displayPics = (photos) => {
   photos.forEach((photo) => {
     const item = document.createElement("a");
+
     item.setAttribute("href", photo?.links?.html);
     item.setAttribute("target", "_blank");
     const img = document.createElement("img");
@@ -25,15 +26,29 @@ const displayPics = (photos) => {
 
 const getPhotos = async () => {
   try {
+    const loader = document.getElementById("loader");
+    loader.removeAttribute("hidden");
     const res = await fetch(api);
     const photosArray = await res.json();
     console.log("photosArray", photosArray);
     if (photosArray.length) {
+      loader.setAttribute("hidden", true);
       displayPics(photosArray);
     }
   } catch (e) {
     console.log(`error is ${e}`);
   }
 };
+
+// scroll event
+
+window.addEventListener("scroll", () => {
+  if (
+    window.innerHeight + window.scrollY >=
+    document.body.offsetHeight - 1000
+  ) {
+    getPhotos();
+  }
+});
 
 getPhotos();
