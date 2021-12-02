@@ -4,10 +4,25 @@ const api = `https://api.unsplash.com/photos/random?client_id=${access_key}&coun
 const loader = document.getElementsByClassName("loader");
 const imageContainer = document.getElementById("image-container");
 const photosArray = [];
+let ready = false;
+let totalImages = 0;
+let imagesHaveLoaded = 0;
 
+// check all images loaded
+
+const imagesLoaded = () => {
+  console.log("images loaded");
+  imagesHaveLoaded++;
+  if (imagesHaveLoaded === totalImages) {
+    ready = true;
+  }
+};
 // display pics
 
 const displayPics = (photos) => {
+  imagesHaveLoaded = 0;
+  totalImages = photos?.length;
+
   photos.forEach((photo) => {
     const item = document.createElement("a");
 
@@ -16,6 +31,8 @@ const displayPics = (photos) => {
     const img = document.createElement("img");
     img.setAttribute("src", photo?.urls?.regular);
     img.setAttribute("alt", photo?.alt_description);
+    // check for each image load
+    img.addEventListener("load", imagesLoaded);
     // put image inside 'a', and both inside 'item-container'
     item.appendChild(img);
     imageContainer.appendChild(item);
@@ -26,15 +43,10 @@ const displayPics = (photos) => {
 
 const getPhotos = async () => {
   try {
-    const loader = document.getElementById("loader");
-    loader.removeAttribute("hidden");
     const res = await fetch(api);
-    const photosArray = await res.json();
-    console.log("photosArray", photosArray);
-    if (photosArray.length) {
-      loader.setAttribute("hidden", true);
-      displayPics(photosArray);
-    }
+    const photos = await res.json();
+
+    displayPics(photos);
   } catch (e) {
     console.log(`error is ${e}`);
   }
@@ -44,10 +56,11 @@ const getPhotos = async () => {
 
 window.addEventListener("scroll", () => {
   if (
-    window.innerHeight + window.scrollY >=
-    document.body.offsetHeight - 1000
+    window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000 &&
+    ready
   ) {
     getPhotos();
+    ready = false;
   }
 });
 
