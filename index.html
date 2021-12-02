@@ -5,22 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="./index.css" rel="stylesheet" />
-    <title>Infinite Scroll</title>
+    <script src="https://use.fontawesome.com/7f5d7329fd.js"></script>
+
+    <title>Quotes Generator</title>
   </head>
   <body>
-    <div style="display: flex; justify-content: center">
-      <h1>Unspalsh API - Infinite Scroll</h1>
+    <div class="quote-container" id="quote-contaier">
+      <!-- quote -->
+      <div class="quote-text">
+        <i class="fas fa-quote-left"></i>
+        <span id="quote">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Facere
+          perspiciatis dolor aute
+        </span>
+      </div>
+      <!-- author -->
+      <div class="author">
+        <span id="author">Buddha </span>
+      </div>
+      <!-- buttons -->
+      <div class="button-container">
+        <button class="twitter" id="twitter" title="Tweet This!">
+          <i class="fab fa-twitter"></i>
+        </button>
+        <button id="new-quote">New Quote</button>
+      </div>
     </div>
-    <div class="loader" id="loader" hidden>
-      <img
-        src="./loader.svg"
-        alt="loader"
-        style="height: 100px; width: 100px"
-      />
-    </div>
-
-    <!-- image container -->
-    <div class="image-container" id="image-container"></div>
     <script type="text/javascript" src="index.js"></script>
   </body>
 </html>
